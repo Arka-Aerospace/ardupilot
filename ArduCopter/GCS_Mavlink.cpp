@@ -1431,7 +1431,14 @@ void GCS_MAVLINK_Copter::handleMessage(const mavlink_message_t &msg)
         copter.g2.toy_mode.handle_message(msg);
         break;
 #endif
-        
+
+    case MSG_SWARM_CONTROL:
+    case MAVLINK_MSG_ID_SWARM_CONTROL:
+        mavlink_swarm_control_t m;
+        mavlink_msg_swarm_control_decode(&msg, &m);
+        mavlink_msg_swarm_control_send(chan, m.timestamp, m.json_payload);
+        break;
+
     default:
         handle_common_message(msg);
         break;
